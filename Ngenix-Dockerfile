@@ -1,0 +1,32 @@
+# Create docker container for client application
+
+#FROM node:10-alpine
+#RUN mkdir -p /src/app
+#RUN mkdir -p /src/app/scripts
+#
+#WORKDIR /src/app
+#
+#COPY html/mnist-client.html /src/app/mnist-client.html
+#COPY scripts/'tfjs@0.11.2'  /src/app/scripts/'tfjs@0.11.2'
+#
+#RUN npm install
+#
+#COPY . /src/app/
+#EXPOSE 3000
+#CMD [ "npm", "start"]
+
+FROM nginx:alpine
+#FROM nginx-extras
+#FROM jwilder/nginx-proxy:0.6.0
+
+COPY ./cors.conf /etc/nginx/vhost.d/default_location
+
+RUN mkdir -p  /usr/share/nginx/html/scripts
+
+RUN mkdir -p  /usr/share/nginx/html/images
+
+COPY html/. /usr/share/nginx/html/.
+COPY scripts/. /usr/share/nginx/html/scripts/.
+COPY html/images /usr/share/nginx/html/images/.
+
+#add_header 'Access-Control-Allow-Origin' '*'
